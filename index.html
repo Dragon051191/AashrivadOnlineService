@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <title>रोज़ की न्यूज़</title>
+  <script src="https://cdn.jsdelivr.net/npm/tabletop@1.6.0/tabletop.min.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f8f8f8; }
+    h1 { color: #333; }
+    .news-item {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 5px #ccc;
+    }
+    .download-btn {
+      padding: 8px 15px;
+      background-color: #007b00;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      display: inline-block;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>📢 आज की न्यूज़</h1>
+  <div id="news-container">लोड हो रहा है...</div>
+
+  <script>
+    function showData(data) {
+      const container = document.getElementById('news-container');
+      container.innerHTML = '';
+      data.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'news-item';
+        div.innerHTML = `
+          <h2>${item.Title}</h2>
+          <p><strong>तारीख:</strong> ${item.Date}</p>
+          <p>${item.Description}</p>
+          <p><strong>प्रकार:</strong> ${item.Type}</p>
+          <a class="download-btn" href="${item['File URL']}" download target="_blank">⬇️ डाउनलोड करें</a>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      Tabletop.init({
+        key: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbVJUTZGuz5H1yZWtkXdhFTzoVNUa5q54CbX_RAMI-3TybXjKZWml1A74iA2_TNHg1wOiEK5mORl5x/pub?output=csv',
+        callback: showData,
+        simpleSheet: true
+      });
+    });
+  </script>
+</body>
+</html>
